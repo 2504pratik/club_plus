@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage>
   final PageController _pageController =
       PageController(initialPage: 0, viewportFraction: 1.0);
   Timer? _timer;
+  int _currentPageIndex = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -21,14 +22,18 @@ class _LoginPageState extends State<LoginPage>
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 2500), (Timer timer) {
       if (_pageController.hasClients) {
-        if (_pageController.page == 3) {
-          _pageController.jumpToPage(0);
+        if (_currentPageIndex == 3) {
+          _currentPageIndex = 0;
         } else {
-          _pageController.nextPage(
-              duration: const Duration(milliseconds: 500), curve: Curves.ease);
+          _currentPageIndex++;
         }
+        _pageController.animateToPage(
+          _currentPageIndex,
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.ease,
+        );
       }
     });
   }
@@ -36,6 +41,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   void dispose() {
     _timer?.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -48,6 +54,11 @@ class _LoginPageState extends State<LoginPage>
         children: [
           PageView(
             controller: _pageController,
+            onPageChanged: (int index) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+            },
             children: [
               Image.asset('images/cycling.jpg', fit: BoxFit.cover),
               Image.asset('images/hiking.jpg', fit: BoxFit.cover),
