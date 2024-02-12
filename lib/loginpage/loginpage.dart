@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'login_function.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -52,6 +54,7 @@ class _LoginPageState extends State<LoginPage>
     return Scaffold(
       body: Stack(
         children: [
+          // Sliding background
           PageView(
             controller: _pageController,
             onPageChanged: (int index) {
@@ -72,9 +75,9 @@ class _LoginPageState extends State<LoginPage>
               Padding(
                 padding: EdgeInsets.only(
                     top: (MediaQuery.of(context).size.height) * 0.40),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       "Club",
                       style: TextStyle(
@@ -120,7 +123,26 @@ class _LoginPageState extends State<LoginPage>
                       child: SizedBox(
                         height: 50,
                         child: TextButton(
-                          onPressed: (() {}),
+                          onPressed: () async {
+                            // Call the loginWithStrava function to initiate the authentication flow
+                            Map<String, dynamic> loginResult =
+                                await LoginFunction.loginWithStrava();
+
+                            if (loginResult['success']) {
+                              // If authentication initiation is successful, launch the Strava authentication page
+                              String authUrl = loginResult['authUrl'];
+                              print(
+                                  'Redirecting to Strava authentication page: $authUrl');
+                              await LoginFunction.launchUrl(authUrl);
+                            } else {
+                              // Handle authentication initiation failure
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(loginResult['error']),
+                                ),
+                              );
+                            }
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Theme.of(context).primaryColor),
