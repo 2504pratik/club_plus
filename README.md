@@ -1,6 +1,6 @@
 # club_plus
 
-A new Flutter project.
+A new Flutter project based on Strava API Integration.
 
 ## Getting Started
 
