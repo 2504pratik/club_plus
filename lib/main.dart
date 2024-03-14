@@ -1,4 +1,5 @@
 import 'package:club_plus/homepage/homepage.dart';
+import 'package:club_plus/homepage/challenge_box.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -6,6 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         primaryColor: const Color(0xFF6B66C7),
       ),
-      home: const HomePage(),
+      home: const ChallengeBox(),
     );
   }
 }
