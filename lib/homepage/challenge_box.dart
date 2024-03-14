@@ -38,16 +38,16 @@ class ChallengeBox extends StatelessWidget {
                       SizedBox(width: 10),
                       Expanded(
                         child: CardWidget(
-                          title: 'Card 1',
-                          description: 'This is the first card',
+                          title: 'Swimming',
+                          description: '....',
                            backgroundImagePath: 'images/swimming.jpg',
                         ),
                       ),
                       SizedBox(width: 10),
                       Expanded(
                         child: CardWidget(
-                          title: 'Card 2',
-                          description: 'This is the second card', 
+                          title: 'Cycling',
+                          description: '......', 
                           backgroundImagePath: 'images/hiking.jpg',
                         ),
                       ),
@@ -61,16 +61,16 @@ class ChallengeBox extends StatelessWidget {
                       SizedBox(width: 10),
                       Expanded(
                         child: CardWidget(
-                          title: 'Card 3',
-                          description: 'This is the third card',
+                          title: 'Hiking',
+                          description: '...........',
                            backgroundImagePath: 'images/running.jpg',
                         ),
                       ),
                       SizedBox(width: 10),
                       Expanded(
                         child: CardWidget(
-                          title: 'Card 4',
-                          description: 'This is the fourth card',
+                          title: 'Running',
+                          description: '.......',
                            backgroundImagePath: 'images/cycling.png',
                         ),
                       ),
