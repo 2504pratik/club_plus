@@ -1,7 +1,5 @@
-import 'package:club_plus/homepage/homepage.dart';
 import 'package:flutter/material.dart';
 
-import 'homepage/challenge_box.dart';
 import 'loginpage/loginpage.dart';
 
 void main() {
@@ -23,8 +21,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login', // Set the initial route
       routes: {
         '/login': (context) => const LoginPage(),
-        '/home': (context) => const HomePage(),
-        '/challengeBox': (context) => const ChallengeBox()
       },
     );
   }
