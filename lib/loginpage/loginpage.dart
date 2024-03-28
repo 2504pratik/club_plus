@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'login_function.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage>
       PageController(initialPage: 0, viewportFraction: 1.0);
   Timer? _timer;
   int _currentPageIndex = 0;
+  late String _redirectUrl; // Changed to nullable string
 
   @override
   bool get wantKeepAlive => true;
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage>
         );
       }
     });
+    fetchRedirectUrl();
   }
 
   @override
@@ -47,10 +49,36 @@ class _LoginPageState extends State<LoginPage>
     super.dispose();
   }
 
+  Future<void> fetchRedirectUrl() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:5000/login'));
+      if (response.statusCode == 200) {
+        setState(() {
+          _redirectUrl = response.body;
+        });
+      } else {
+        print('Failed to fetch redirect URL: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching redirect URL: $error');
+    }
+  }
+
+  Future<void> launchUrl(String? url) async {
+    if (url != null) {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        print('Could not launch $url');
+      }
+    } else {
+      print('Error: Redirect URL is null');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    super.build(
-        context); // Ensure that AutomaticKeepAliveClientMixin is properly called
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -123,25 +151,8 @@ class _LoginPageState extends State<LoginPage>
                       child: SizedBox(
                         height: 50,
                         child: TextButton(
-                          onPressed: () async {
-                            // Call the loginWithStrava function to initiate the authentication flow
-                            Map<String, dynamic> loginResult =
-                                await LoginFunction.loginWithStrava();
-
-                            if (loginResult['success']) {
-                              // If authentication initiation is successful, launch the Strava authentication page
-                              String authUrl = loginResult['authUrl'];
-                              print(
-                                  'Redirecting to Strava authentication page: $authUrl');
-                              await LoginFunction.launchUrl(authUrl);
-                            } else {
-                              // Handle authentication initiation failure
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(loginResult['error']),
-                                ),
-                              );
-                            }
+                          onPressed: () {
+                            launchUrl(_redirectUrl);
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
