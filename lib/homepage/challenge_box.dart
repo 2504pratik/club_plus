@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ChallenegeBox extends StatelessWidget {
-  const ChallenegeBox({super.key});
+class ChallengeBox extends StatelessWidget {
+  const ChallengeBox({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Card(
-        child: Text("Hello"),
-      ),
-    );
+    return const Placeholder();
   }
 }
