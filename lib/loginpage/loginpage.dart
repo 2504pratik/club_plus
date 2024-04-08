@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
@@ -68,6 +69,27 @@ class _LoginPageState extends State<LoginPage>
     if (url != null) {
       if (await canLaunch(url)) {
         await launch(url);
+
+        // Listen for URL changes
+        StreamSubscription? linkSubscription;
+        linkSubscription = linkStream.listen((String? newUrl) async {
+          if (newUrl != null && newUrl.startsWith('clubplus://redirect')) {
+            // Extract the authorization code from the URL
+            final uri = Uri.parse(newUrl);
+            final String? code = uri.queryParameters['code'];
+            if (code != null) {
+              // Cancel the subscription to avoid memory leaks
+              linkSubscription?.cancel();
+
+              print('Last URL received: $newUrl');
+
+              // Navigate to the home page with the authorization code
+              Navigator.pushReplacementNamed(context, '/home', arguments: code);
+            } else {
+              print('Error: Authorization code not found in the redirect URL');
+            }
+          }
+        });
       } else {
         print('Could not launch $url');
       }
