@@ -1,7 +1,10 @@
-import 'package:club_plus/homepage/homepage.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_import
 
+import 'package:club_plus/homepage/homepage.dart';
+import 'package:club_plus/profilepage/profilepage.dart';
 import 'loginpage/loginpage.dart';
+
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +25,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login', // Set the initial route
       routes: {
         '/login': (context) => const LoginPage(),
-        '/home': (context) => const HomePage()
+        '/home': (context) => const HomePage(),
+        '/profile': (context) => const ProfilePage()
       },
     );
   }

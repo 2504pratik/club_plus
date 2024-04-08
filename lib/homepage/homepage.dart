@@ -111,9 +111,14 @@ class HomePage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            CircleAvatar(
-                              backgroundColor: const Color(0xFF200E32),
-                              child: Image.asset('images/user_icon.png'),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/profile');
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: const Color(0xFF200E32),
+                                child: Image.asset('images/user_icon.png'),
+                              ),
                             ),
                           ],
                         ),
@@ -166,9 +171,9 @@ class HomePage extends StatelessWidget {
                                   break;
                               }
                               return ChallengeBox(
-                                title: challenge.challengeTitle,
-                                description: challenge.desc,
-                                backgroundImagePath: imagePath,
+                                challenge.challengeTitle,
+                                challenge.desc,
+                                imagePath,
                               );
                             },
                           )),
