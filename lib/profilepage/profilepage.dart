@@ -1,8 +1,56 @@
 import 'package:club_plus/profilepage/custom_box.dart';
-import 'package:flutter/material.dart';
+import '../models/user.dart';
 
-class ProfilePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'createclub.dart';
+
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final User user = User(userId: '1', userName: 'Pratik', clubs: []);
+
+  // Future<void> fetchAthleteData() async {
+  //   try {
+  //     final response =
+  //         await http.get(Uri.parse('http://10.0.2.2:5000/athlete'));
+  //     if (response.statusCode == 200) {
+  //       final userData = json.decode(response.body);
+  //       setState(() {
+  //         user = User(
+  //           userId: userData['id'],
+  //           userName: '${userData['firstname']} ${userData['lastname']}',
+  //           userProfile: userData['profile'],
+  //         );
+  //       });
+  //     } else {
+  //       // Handle error
+  //       print('Failed to fetch athlete data: ${response.statusCode}');
+  //     }
+  //   } catch (error) {
+  //     // Handle error
+  //     print('Failed to fetch athlete data: $error');
+  //   }
+  // }
+
+  // Function to handle logout
+  Future<void> _logout(BuildContext context) async {
+    // Make HTTP request to logout endpoint
+    final response = await http.get(Uri.parse('http://10.0.2.2:5000/logout'));
+    if (response.statusCode == 200) {
+      // Redirect user to login page
+      Navigator.pushNamed(context, '/login');
+    } else {
+      // Handle error
+      print('Failed to logout: ${response.reasonPhrase}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +81,15 @@ class ProfilePage extends StatelessWidget {
             left: 20.0,
             child: Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 30.0,
-                  child: Image.asset('images/user_icon.png'),
-                ),
+                const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 30.0,
+                    // ignore: unnecessary_null_comparison
+                    backgroundImage: AssetImage('images/user_icon.png')),
                 const SizedBox(width: 10.0),
-                const Text(
-                  'User Name',
-                  style: TextStyle(
+                Text(
+                  user.userName, // Display the user name if available, otherwise display 'Loading...'
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 24.0,
                     fontWeight: FontWeight.w400,
@@ -51,6 +99,7 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
           ),
+
           // Back Button Icon
           Positioned(
             top: 40.0,
@@ -108,12 +157,24 @@ class ProfilePage extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Create a club',
-                              style: TextStyle(
-                                color: Color(0xFF1E3D8A),
-                                fontSize: 20,
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                // Navigate to CreateClubPage and pass user object
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CreateClub(user: user),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Create a club',
+                                style: TextStyle(
+                                  color: Color(0xFF1E3D8A),
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),
@@ -134,12 +195,15 @@ class ProfilePage extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Log out',
-                              style: TextStyle(
-                                color: Color(0xFF1E3D8A),
-                                fontSize: 20,
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () => _logout(context),
+                              child: const Text(
+                                'Log out',
+                                style: TextStyle(
+                                  color: Color(0xFF1E3D8A),
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),

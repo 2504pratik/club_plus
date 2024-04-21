@@ -1,24 +1,9 @@
+import 'club.dart';
+
 class User {
-  late int userId;
-  late String userName;
+  final String userId;
+  final String userName;
+  List<Club> clubs;
 
-  // Getters
-  int get getUserId => userId;
-
-  String get getUserName => userName;
-
-  // Setters
-  set setUserId(int value) {
-    userId = value;
-  }
-
-  set setUserName(String value) {
-    userName = value;
-  }
-
-  // Constructor
-  User(int userId, String userName) {
-    this.userId = userId;
-    this.userName = userName;
-  }
+  User({required this.userId, required this.userName, required this.clubs});
 }

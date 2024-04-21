@@ -1,39 +1,18 @@
+import 'challenge.dart';
+import 'user.dart';
+
 class Club {
-  late int clubId;
-  late String clubName;
-  late int adminId;
-  late bool isVerified = false;
+  final String clubId;
+  final String clubName;
+  final String description;
+  final List<User> members;
+  final List<Challenge> challenges;
 
-  // Getters
-  int get getClubId => clubId;
-
-  String get getClubName => clubName;
-
-  int get getAdminId => adminId;
-
-  bool get getIsVerified => isVerified;
-
-  // Setters
-  set setClubId(int value) {
-    clubId = value;
-  }
-
-  set setClubName(String value) {
-    clubName = value;
-  }
-
-  set setAdminId(int value) {
-    adminId = value;
-  }
-
-  set setIsVerified(bool value) {
-    isVerified = value;
-  }
-
-  Club(int clubId, String clubName, int adminId, bool isVerified) {
-    this.clubId = clubId;
-    this.clubName = clubName;
-    this.adminId = adminId;
-    this.isVerified = isVerified;
-  }
+  Club({
+    required this.clubId,
+    required this.clubName,
+    required this.description,
+    required this.members,
+    required this.challenges,
+  });
 }

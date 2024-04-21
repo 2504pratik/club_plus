@@ -1,5 +1,3 @@
-// ignore_for_file: unused_import
-
 import 'package:club_plus/homepage/homepage.dart';
 import 'package:club_plus/profilepage/profilepage.dart';
 import 'loginpage/loginpage.dart';
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
-        '/profile': (context) => const ProfilePage()
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }
