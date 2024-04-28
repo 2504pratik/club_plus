@@ -1,91 +1,45 @@
 enum ActivityType { running, swimming, cycling, hiking }
 
 class Challenge {
-  late int challengeId;
-  late String challengeTitle;
-  late DateTime startDate;
-  late DateTime startTime;
-  late DateTime endDate;
-  late DateTime endTime;
-  late ActivityType activityType;
-  late String desc;
-  late bool completed = false;
+  final String challengeId;
+  final String challengeTitle;
+  final DateTime startDate;
+  final DateTime endDate;
+  final ActivityType activityType;
+  final String desc;
 
-  // Getters
-  int get getChallengeId => challengeId;
+  // Constructor
+  Challenge({
+    required this.challengeId,
+    required this.challengeTitle,
+    required this.startDate,
+    required this.endDate,
+    required this.activityType,
+    required this.desc,
+  });
 
-  String get getChallengeTitle => challengeTitle;
+  // Constructor to initialize from JSON
+  Challenge.fromJson(Map<String, dynamic> json)
+      : challengeId = json['challengeId'],
+        challengeTitle = json['challengeTitle'],
+        startDate = DateTime.parse(json['startDate']),
+        endDate = DateTime.parse(json['endDate']),
+        activityType = _parseActivityType(json['activityType']),
+        desc = json['desc'];
 
-  DateTime get getStartDate => startDate;
-
-  DateTime get getStartTime => startTime;
-
-  DateTime get getEndDate => endDate;
-
-  DateTime get getEndTime => endTime;
-
-  ActivityType get getActivityType => activityType;
-
-  String get getDesc => desc;
-
-  bool get getCompleted => completed;
-
-  // Setters
-  set setChallengeId(int value) {
-    challengeId = value;
-  }
-
-  set setChallengeTitle(String value) {
-    challengeTitle = value;
-  }
-
-  set setStartDate(DateTime value) {
-    startDate = value;
-  }
-
-  set setStartTime(DateTime value) {
-    startTime = value;
-  }
-
-  set setEndDate(DateTime value) {
-    endDate = value;
-  }
-
-  set setEndTime(DateTime value) {
-    endTime = value;
-  }
-
-  set setActivityType(ActivityType value) {
-    activityType = value;
-  }
-
-  set setDesc(String value) {
-    desc = value;
-  }
-
-  set setCompleted(bool value) {
-    completed = value;
-  }
-
-  // Constructors
-  Challenge(
-      int challengeId,
-      String challengeTitle,
-      DateTime startDate,
-      DateTime startTime,
-      DateTime endDate,
-      DateTime endTime,
-      ActivityType activityType,
-      String desc,
-      bool completed) {
-    this.challengeId = challengeId;
-    this.challengeTitle = challengeTitle;
-    this.startDate = startDate;
-    this.startTime = startTime;
-    this.endDate = endDate;
-    this.endTime = endTime;
-    this.activityType = activityType;
-    this.desc = desc;
-    this.completed = completed;
+  // Helper function to parse ActivityType
+  static ActivityType _parseActivityType(String type) {
+    switch (type) {
+      case 'running':
+        return ActivityType.running;
+      case 'swimming':
+        return ActivityType.swimming;
+      case 'cycling':
+        return ActivityType.cycling;
+      case 'hiking':
+        return ActivityType.hiking;
+      default:
+        throw ArgumentError('Invalid activity type: $type');
+    }
   }
 }

@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../homepage/homepage.dart';
+import '../models/user.dart';
+
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -52,7 +56,7 @@ class _LoginPageState extends State<LoginPage>
 
   Future<void> fetchRedirectUrl() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:5000/login'));
+      final response = await http.get(Uri.parse('http://10.0.2.2:5001/login'));
       if (response.statusCode == 200) {
         setState(() {
           _redirectUrl = response.body;
@@ -83,8 +87,47 @@ class _LoginPageState extends State<LoginPage>
 
               print('Last URL received: $newUrl');
 
-              // Navigate to the home page with the authorization code
-              Navigator.pushReplacementNamed(context, '/home', arguments: code);
+              // Exchange authorization code for access token
+              final response = await http.post(
+                Uri.parse('http://10.0.2.2:5001/strava/auth'),
+                headers: {"Content-Type": "application/json"},
+                body: json.encode({"code": code}),
+              );
+
+              if (response.statusCode == 200) {
+                final access_token = json.decode(response.body)['access_token'];
+
+                // Make API call to get authenticated athlete
+                final athleteResponse = await http.get(
+                  Uri.parse('http://10.0.2.2:5001/athlete'),
+                  headers: {"Authorization": "Bearer $access_token"},
+                );
+
+                if (athleteResponse.statusCode == 200) {
+                  // Store the athlete data in a temporary file
+                  final athleteData = json.decode(athleteResponse.body);
+
+                  final User user = User(
+                      userId: athleteData['id'].toString(),
+                      firstName: athleteData['firstname'],
+                      lastName: athleteData['lastname'],
+                      profilePicUrl: athleteData['profile']);
+
+                  // Navigate to the home page
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(user: user),
+                    ),
+                  );
+                } else {
+                  print(
+                      'Failed to fetch athlete data: ${athleteResponse.statusCode}');
+                }
+              } else {
+                print(
+                    'Failed to exchange authorization code for access token: ${response.statusCode}');
+              }
             } else {
               print('Error: Authorization code not found in the redirect URL');
             }

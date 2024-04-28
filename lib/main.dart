@@ -1,5 +1,3 @@
-import 'package:club_plus/homepage/homepage.dart';
-import 'package:club_plus/profilepage/profilepage.dart';
 import 'loginpage/loginpage.dart';
 
 import 'package:flutter/material.dart';
@@ -23,8 +21,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login', // Set the initial route
       routes: {
         '/login': (context) => const LoginPage(),
-        '/home': (context) => const HomePage(),
-        '/profile': (context) => const ProfilePage(),
       },
     );
   }

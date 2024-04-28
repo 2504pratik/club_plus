@@ -1,44 +1,20 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:club_plus/profilepage/custom_box.dart';
 import '../models/user.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'createclub.dart';
-
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  late User user;
+  ProfilePage({super.key, required this.user});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final User user = User(userId: '1', userName: 'Pratik', clubs: []);
-
-  // Future<void> fetchAthleteData() async {
-  //   try {
-  //     final response =
-  //         await http.get(Uri.parse('http://10.0.2.2:5000/athlete'));
-  //     if (response.statusCode == 200) {
-  //       final userData = json.decode(response.body);
-  //       setState(() {
-  //         user = User(
-  //           userId: userData['id'],
-  //           userName: '${userData['firstname']} ${userData['lastname']}',
-  //           userProfile: userData['profile'],
-  //         );
-  //       });
-  //     } else {
-  //       // Handle error
-  //       print('Failed to fetch athlete data: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     // Handle error
-  //     print('Failed to fetch athlete data: $error');
-  //   }
-  // }
-
   // Function to handle logout
   Future<void> _logout(BuildContext context) async {
     // Make HTTP request to logout endpoint
@@ -81,14 +57,14 @@ class _ProfilePageState extends State<ProfilePage> {
             left: 20.0,
             child: Row(
               children: [
-                const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 30.0,
-                    // ignore: unnecessary_null_comparison
-                    backgroundImage: AssetImage('images/user_icon.png')),
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 30.0,
+                  backgroundImage: NetworkImage(widget.user.profilePicUrl),
+                ),
                 const SizedBox(width: 10.0),
                 Text(
-                  user.userName, // Display the user name if available, otherwise display 'Loading...'
+                  '${widget.user.firstName} ${widget.user.lastName}', // Display the user name
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 24.0,
@@ -99,7 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-
           // Back Button Icon
           Positioned(
             top: 40.0,
@@ -140,47 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 20),
                     CustomBox('Statistics', 'images/ic_statistics.png'),
                     const SizedBox(height: 20),
-                    CustomBox('Goals', 'images/ic_goals.png'),
-                    const SizedBox(height: 20),
-                    CustomBox('Add Gear', 'images/ic_add.png'),
-                    const SizedBox(height: 40),
-                    // Create a club page
-                    Material(
-                      borderRadius: BorderRadius.circular(10),
-                      elevation: 8,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          height: 80,
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigate to CreateClubPage and pass user object
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        CreateClub(user: user),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'Create a club',
-                                style: TextStyle(
-                                  color: Color(0xFF1E3D8A),
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    CustomBox('Clubs', 'images/ic_goals.png'),
                     const SizedBox(height: 40),
                     // Log out button
                     Material(
