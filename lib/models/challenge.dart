@@ -1,4 +1,4 @@
-enum ActivityType { running, swimming, cycling, hiking }
+enum ActivityType { walk, swimming, cycling, hiking }
 
 class Challenge {
   final String challengeId;
@@ -7,8 +7,8 @@ class Challenge {
   final DateTime endDate;
   final ActivityType activityType;
   final String desc;
+  final double target;
 
-  // Constructor
   Challenge({
     required this.challengeId,
     required this.challengeTitle,
@@ -16,22 +16,25 @@ class Challenge {
     required this.endDate,
     required this.activityType,
     required this.desc,
+    required this.target,
   });
 
-  // Constructor to initialize from JSON
-  Challenge.fromJson(Map<String, dynamic> json)
-      : challengeId = json['challengeId'],
-        challengeTitle = json['challengeTitle'],
-        startDate = DateTime.parse(json['startDate']),
-        endDate = DateTime.parse(json['endDate']),
-        activityType = _parseActivityType(json['activityType']),
-        desc = json['desc'];
+  factory Challenge.fromJson(Map<String, dynamic> json) {
+    return Challenge(
+      challengeId: json['challengeId'],
+      challengeTitle: json['challengeTitle'],
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
+      activityType: _parseActivityType(json['activityType']),
+      desc: json['desc'],
+      target: json['target'].toDouble(),
+    );
+  }
 
-  // Helper function to parse ActivityType
   static ActivityType _parseActivityType(String type) {
     switch (type) {
-      case 'running':
-        return ActivityType.running;
+      case 'walk':
+        return ActivityType.walk;
       case 'swimming':
         return ActivityType.swimming;
       case 'cycling':

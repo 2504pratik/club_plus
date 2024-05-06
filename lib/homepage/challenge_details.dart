@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:club_plus/models/challenge.dart';
+import 'package:provider/provider.dart';
+
+import '../leaderboard/leaderboard.dart';
+import '../providers/user_provider.dart';
 
 class ChallengeDetailsPage extends StatelessWidget {
   final Challenge challenge;
@@ -10,6 +14,7 @@ class ChallengeDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).currentUser;
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -45,7 +50,15 @@ class ChallengeDetailsPage extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Handle accepting the challenge
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LeaderboardPage(
+                        currentUser: currentUser,
+                        challenge: challenge,
+                      ),
+                    ),
+                  );
                 },
                 child: const Text('Accept Challenge'),
               ),

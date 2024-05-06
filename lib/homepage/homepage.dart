@@ -49,18 +49,18 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Hello ${user.firstName}',
-                                  style: const TextStyle(
+                                  'Hello',
+                                  style: TextStyle(
                                     color: Color(0xFF200E32),
-                                    fontSize: 48,
+                                    fontSize: 40,
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   'Welcome to Club+',
                                   style: TextStyle(
                                     color: Color(0xFF8F8698),
@@ -136,7 +136,7 @@ class HomePage extends StatelessWidget {
                                 // Determine image path based on activity type
                                 String imagePath;
                                 switch (challenge.activityType) {
-                                  case ActivityType.running:
+                                  case ActivityType.walk:
                                     imagePath = 'images/running.jpg';
                                     break;
                                   case ActivityType.swimming:

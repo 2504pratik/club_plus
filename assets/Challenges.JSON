@@ -5,80 +5,28 @@
         "challengeTitle": "Morning Run",
         "startDate": "2024-05-01",
         "endDate": "2024-05-07",
-        "activityType": "running",
-        "desc": "Run 5 kilometers every morning"
+        "activityType": "walk",
+        "desc": "Run 5 kilometers every morning",
+        "target": 5000
       },
       {
         "challengeId": "2",
-        "challengeTitle": "Swim Challenge",
-        "startDate": "2024-05-05",
-        "endDate": "2024-05-15",
-        "activityType": "swimming",
-        "desc": "Swim 1 hour every day"
-      },
-      {
-        "challengeId": "3",
-        "challengeTitle": "Hiking Adventure",
-        "startDate": "2024-05-10",
-        "endDate": "2024-05-20",
-        "activityType": "hiking",
-        "desc": "Hike a new trail every weekend"
-      },
-      {
-        "challengeId": "4",
         "challengeTitle": "Cycling Challenge",
         "startDate": "2024-05-02",
         "endDate": "2024-05-12",
         "activityType": "cycling",
-        "desc": "Cycle 20 kilometers every other day"
+        "desc": "Cycle 20 kilometers every other day",
+        "target": 20000
       },
       {
-        "challengeId": "5",
-        "challengeTitle": "5K Run",
-        "startDate": "2024-05-03",
-        "endDate": "2024-05-09",
-        "activityType": "running",
-        "desc": "Run a 5K race"
-      },
-      {
-        "challengeId": "6",
-        "challengeTitle": "Swimming Challenge",
-        "startDate": "2024-05-07",
-        "endDate": "2024-05-17",
-        "activityType": "swimming",
-        "desc": "Swim 2 kilometers every day"
-      },
-      {
-        "challengeId": "7",
-        "challengeTitle": "Mountain Biking",
-        "startDate": "2024-05-12",
-        "endDate": "2024-05-22",
-        "activityType": "cycling",
-        "desc": "Explore new mountain bike trails"
-      },
-      {
-        "challengeId": "8",
-        "challengeTitle": "Morning Jog",
-        "startDate": "2024-05-15",
-        "endDate": "2024-05-25",
-        "activityType": "running",
-        "desc": "Jog in the morning for 30 minutes"
-      },
-      {
-        "challengeId": "9",
-        "challengeTitle": "Open Water Swimming",
-        "startDate": "2024-05-18",
-        "endDate": "2024-05-28",
-        "activityType": "swimming",
-        "desc": "Swim in open water twice a week"
-      },
-      {
-        "challengeId": "10",
-        "challengeTitle": "Trail Running",
-        "startDate": "2024-05-20",
-        "endDate": "2024-05-30",
-        "activityType": "running",
-        "desc": "Run on different trails"
+        "challengeId": "3",
+        "challengeTitle": "Daily Walk",
+        "startDate": "2024-05-02",
+        "endDate": "2024-05-12",
+        "activityType": "walk",
+        "desc": "Walk 2 km every day",
+        "target": 2000
       }
+
     ]
 }

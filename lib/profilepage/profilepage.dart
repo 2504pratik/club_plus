@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:club_plus/activitypage/useractivities.dart';
 import 'package:club_plus/profilepage/custom_box.dart';
 import '../models/user.dart';
 
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   // Function to handle logout
   Future<void> _logout(BuildContext context) async {
     // Make HTTP request to logout endpoint
-    final response = await http.get(Uri.parse('http://10.0.2.2:5000/logout'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:5001/logout'));
     if (response.statusCode == 200) {
       // Redirect user to login page
       Navigator.pushNamed(context, '/login');
@@ -111,7 +112,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomBox('Activities', 'images/ic_running.png'),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserActivities()));
+                      },
+                      child: CustomBox('Activities', 'images/ic_running.png'),
+                    ),
                     const SizedBox(height: 20),
                     CustomBox('Statistics', 'images/ic_statistics.png'),
                     const SizedBox(height: 20),

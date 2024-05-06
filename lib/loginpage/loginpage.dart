@@ -3,11 +3,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../homepage/homepage.dart';
+import '../models/activity.dart';
 import '../models/user.dart';
+import '../providers/activity_provider.dart';
+import '../providers/user_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -69,7 +73,7 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-  Future<void> launchUrl(String? url) async {
+  Future<void> launchUrl(BuildContext context, String? url) async {
     if (url != null) {
       if (await canLaunch(url)) {
         await launch(url);
@@ -103,15 +107,40 @@ class _LoginPageState extends State<LoginPage>
                   headers: {"Authorization": "Bearer $access_token"},
                 );
 
-                if (athleteResponse.statusCode == 200) {
+                // Fetch activities of the authenticated athlete
+                final activitiesResponse = await http.get(
+                  Uri.parse('http://10.0.2.2:5001/activities'),
+                  headers: {"Authorization": "Bearer $access_token"},
+                );
+
+                if (activitiesResponse.statusCode == 200 &&
+                    athleteResponse.statusCode == 200) {
+                  // Process activities data here
+                  final List<dynamic> activitiesJson =
+                      json.decode(activitiesResponse.body);
+                  final List<Activity> activities = activitiesJson
+                      .map((activityJson) => Activity.fromJson(activityJson))
+                      .toList();
+
+                  // Store activities in provider
+                  final activityProvider =
+                      Provider.of<ActivityProvider>(context, listen: false);
+                  activityProvider.setActivities(activities);
                   // Store the athlete data in a temporary file
                   final athleteData = json.decode(athleteResponse.body);
 
                   final User user = User(
-                      userId: athleteData['id'].toString(),
-                      firstName: athleteData['firstname'],
-                      lastName: athleteData['lastname'],
-                      profilePicUrl: athleteData['profile']);
+                    userId: athleteData['id'].toString(),
+                    firstName: athleteData['firstname'],
+                    lastName: athleteData['lastname'],
+                    profilePicUrl: athleteData['profile'],
+                    activities: activities,
+                  );
+
+                  // Set the current user using the UserProvider
+                  final userProvider =
+                      Provider.of<UserProvider>(context, listen: false);
+                  userProvider.setCurrentUser(user);
 
                   // Navigate to the home page
                   Navigator.pushReplacement(
@@ -122,7 +151,7 @@ class _LoginPageState extends State<LoginPage>
                   );
                 } else {
                   print(
-                      'Failed to fetch athlete data: ${athleteResponse.statusCode}');
+                      'Failed to fetch athlete activities: ${activitiesResponse.statusCode}');
                 }
               } else {
                 print(
@@ -217,7 +246,7 @@ class _LoginPageState extends State<LoginPage>
                         height: 50,
                         child: TextButton(
                           onPressed: () {
-                            launchUrl(_redirectUrl);
+                            launchUrl(context, _redirectUrl);
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
